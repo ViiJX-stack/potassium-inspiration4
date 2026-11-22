@@ -1,4 +1,5 @@
-# Potassium after a 3-day orbital flight · Potasio tras un vuelo orbital de 3 días
+# Flight stress and serum potassium variation in spaceflight crews: a renin–angiotensin–aldosterone system hypothesis
+# Estrés del vuelo y variación del potasio sérico en tripulaciones espaciales: hipótesis del sistema renina–angiotensina–aldosterona
 
 **English** · [Español](#español)
 

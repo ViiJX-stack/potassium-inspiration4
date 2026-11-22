@@ -1,0 +1,8 @@
+panel,crew,timepoint,variable,reported_value,issue,action
+CMP,C002,R+45,glucose,44,"< 55 mg/dL: in-vitro glycolysis (delayed serum separation)",excluded glucose and potassium at R+45 for all crew
+CMP,C003,R+45,glucose,36,"< 55 mg/dL: in-vitro glycolysis (delayed serum separation)",excluded glucose and potassium at R+45 for all crew
+CMP,C004,R+45,glucose,43,"< 55 mg/dL: in-vitro glycolysis (delayed serum separation)",excluded glucose and potassium at R+45 for all crew
+CMP,C004,R+45,potassium,5.9,"above reference interval with low glucose: potassium leakage from cells (delayed separation)",excluded
+CBC,C003,L-92,absolute_neutrophils,10.1,"column shift: WBC 9.6 x10^3/uL and neutrophils 71.1 % imply ~6826 cells/uL",recalculated as WBC x %
+CBC,C003,L-92,absolute_lymphocytes,6826,"column shift: expected ~1997 cells/uL",recalculated as WBC x %
+CBC,C003,L-92,absolute_eosinophils,614,"column shift: expected ~125 cells/uL",recalculated as WBC x %
