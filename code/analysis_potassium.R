@@ -1,19 +1,15 @@
 # Potassium and markers of the cortisol-aldosterone response after spaceflight
-# Inspiration4 crew, NASA OSDR (OSD-569, OSD-575). Exploratory, hypothesis-generating analysis.
+# Inspiration4 crew, NASA OSDR metabolic panel (OSD-575). Exploratory, hypothesis-generating analysis.
 suppressPackageStartupMessages({ library(lme4); library(lmerTest); library(pbkrtest) })
 d <- read.csv("k_analysis.csv")
 d$phase <- factor(d$phase, levels = c("1_pre", "2_return", "3_recovery"))
-d$log_nlr <- log(d$nlr)
-d$log_eos <- log(d$eosinophils)
 
 markers <- list(
   potassium   = list(var = "potassium_a", log = FALSE, role = "primary",   arm = "Aldosterone"),
   sodium      = list(var = "sodium",      log = FALSE, role = "secondary", arm = "Aldosterone"),
   chloride    = list(var = "chloride",    log = FALSE, role = "secondary", arm = "Aldosterone"),
   bicarbonate = list(var = "bicarbonate", log = FALSE, role = "secondary", arm = "Aldosterone"),
-  glucose     = list(var = "glucose_a",   log = FALSE, role = "secondary", arm = "Cortisol"),
-  nlr         = list(var = "log_nlr",     log = TRUE,  role = "secondary", arm = "Cortisol"),
-  eosinophils = list(var = "log_eos",     log = TRUE,  role = "secondary", arm = "Cortisol"),
+  glucose     = list(var = "glucose_a",   log = FALSE, role = "secondary", arm = "Stress"),
   creatinine  = list(var = "creatinine",  log = FALSE, role = "context",   arm = "Renal")
 )
 
@@ -35,7 +31,7 @@ for (nm in names(markers)) {
   }
 }
 res <- do.call(rbind, out)
-# Holm correction across the six secondary markers, return contrast only
+# Holm correction across the four secondary markers, return contrast only
 sec <- res$role == "secondary" & res$contrast == "phase2_return"
 res$p_holm <- NA
 res$p_holm[sec] <- p.adjust(res$p[sec], method = "holm")
@@ -50,7 +46,7 @@ print(format(res[, c("marker","contrast","n","est","lo","hi","df","p","p_holm","
 fb <- lmer(bicarbonate ~ phase + (1|crew), data = subset(d, timepoint != "R+45"), REML = TRUE)
 print(summary(fb, ddf = "Kenward-Roger")$coefficients)
 # Per-crew change at R+1 versus own preflight mean
-for (v in c("potassium_a", "glucose_a", "bicarbonate", "sodium", "chloride", "nlr", "eosinophils")) {
+for (v in c("potassium_a", "glucose_a", "bicarbonate", "sodium", "chloride", "creatinine")) {
   pre <- tapply(d[[v]][d$phase == "1_pre"], d$crew[d$phase == "1_pre"], mean, na.rm = TRUE)
   r1 <- setNames(d[[v]][d$timepoint == "R+1"], d$crew[d$timepoint == "R+1"])
   cat(v, ":", paste(names(r1), round(r1 - pre[names(r1)], 2), collapse = "  "), "\n")
